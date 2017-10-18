@@ -7,7 +7,8 @@ const _import = require('src/router/_import_' + process.env.NODE_ENV);
 const user = {
   state: {
     user: Cookies.get('Admin-User'),
-    addRouters: Cookies.get('Admin-routers'),
+    addRouters:[],
+    //addRouters: Cookies.get('Admin-routers'),
     token: Cookies.get('Admin-Token'),
     //user: [],
     //token: '',
@@ -50,9 +51,10 @@ const user = {
               commit('SET_USER', admin);  
               commit('SET_TOKEN', response.token);  
               commit('SET_TIPS', null);
-              Cookies.set('Admin-Token', response.token); 
-              
+              Cookies.set('Admin-Token', response.token);               
               Cookies.set('Admin-User', admin); 
+              Cookies.set('Admin-userName', userName); 
+              Cookies.set('Admin-password', password); 
 
               //根据后台返回，获取可访问的菜单权限   
               asyncRouterMap[0].children = [];
@@ -74,7 +76,7 @@ const user = {
                 }          
                 accessMenu[0].children.push(menu); 
               }
-              Cookies.set('Admin-routers', "hello world"); 
+              //Cookies.set('Admin-routers', "hello world"); 
               commit('SET_ROUTERS', accessMenu); 
               
               // 动态添加可访问路由表 
@@ -86,7 +88,8 @@ const user = {
               commit('SET_ROUTERS', []); 
               Cookies.remove('Admin-Token');
               Cookies.remove('Admin-User');
-              Cookies.remove('Admin-routers');
+              Cookies.remove('Admin-userName');
+              Cookies.remove('Admin-password');
           }
           resolve(response);
         }).catch(error => {
@@ -103,7 +106,8 @@ const user = {
           commit('SET_ROUTERS', []);  
           Cookies.remove('Admin-Token');
           Cookies.remove('Admin-User');
-          Cookies.remove('Admin-routers');
+          Cookies.remove('Admin-userName');
+          Cookies.remove('Admin-password');
           
           resolve();
         }).catch(error => {
@@ -121,7 +125,8 @@ const user = {
           commit('SET_ROUTERS', []); 
           Cookies.remove('Admin-Token');
           Cookies.remove('Admin-User');
-          Cookies.remove('Admin-routers');
+          Cookies.remove('Admin-userName');
+          Cookies.remove('Admin-password');
           resolve();
       });
     },

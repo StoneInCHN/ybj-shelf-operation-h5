@@ -3,6 +3,7 @@ import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import Cookies from 'js-cookie';
+import {getCurrentUser} from 'api/common';
 
 // permissiom judge
 function hasPermission(roles, permissionRoles) {
@@ -14,32 +15,36 @@ function hasPermission(roles, permissionRoles) {
 
 const whiteList = ['/login', '/authredirect']// 不重定向白名单
 router.beforeEach((to, from, next) => {
-  NProgress.start() // 开启Progress
-  //console.info(store.getters.token);
-  //console.info(store.getters.user);
-  //console.info(store.getters.addRouters);
-
-  //console.info(Cookies.get('Admin-User'));
-  //console.info(Cookies.get('Admin-Token')); 
-  //console.info(Cookies.get('Admin-routers'));
-  
+  NProgress.start() // 开启Progress  
   if (store.getters.token) { // 判断是否有token
     if (to.path === '/login') {
-      console.info("123");
       next({ path: '/' })
     } else {
       if (store.getters.user.length === 0) {
-          console.info("456");
           next({ path: '/login' }) 
       }else{
-          //console.info("789");
-          next()          
+        if (store.getters.addRouters && store.getters.addRouters.length > 0) {
+          //console.info("666");
+          next();
+        }else{
+          //console.info("555 relogin");
+          var loginForm = {}
+          loginForm.userName = Cookies.get('Admin-userName')
+          loginForm.password = Cookies.get('Admin-password')
+          //console.info(loginForm);
+          store.dispatch('Login', loginForm).then(res => {
+              
+          }).catch(err => {
+              this.$message.error(err);
+          });
+          next();
+        }                   
           //router.addRoutes(Cookies.get('Admin-routers')) // 动态添加可访问路由表
           //next({ ...to }) // hack方法 确保addRoutes已完成
       }
     }
   } else {
-    console.info("9999");
+    //console.info("9999");
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
     } else {
