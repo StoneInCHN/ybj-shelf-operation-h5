@@ -44,8 +44,10 @@ const user = {
     Login({ commit }, userInfo) {
       const userName = userInfo.userName.trim();
       const password = userInfo.password.trim();
+      const captcha = userInfo.captcha.trim();
+      const captchaId = userInfo.captchaId;      
       return new Promise((resolve, reject) => {
-        login(userName, password).then(response => {
+        login(userName, password, captcha, captchaId).then(response => {
           if(response.code === '0000' && response.msg.roles.length > 0) {
               const admin = response.msg;          
               commit('SET_USER', admin);  

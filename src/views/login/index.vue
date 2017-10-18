@@ -12,6 +12,20 @@
           <Icon type="ios-locked-outline" slot="prepend"></Icon>
           </Input>
         </Form-item>
+        <Form-item prop="captcha">
+          <Row>
+            <Col span="17">
+              <Input type="text" v-model="loginForm.captcha" placeholder="验证码">
+                <Icon type="ios-locked-outline" slot="prepend"></Icon>
+              </Input>
+            </Col>
+            <Col span="7">
+              <span style="padding-left:15px;height:47px;line-height:47px;cursor:pointer">
+                <img style="border-radius:3px" :src="captchaUrl" @click="changeCaptcha"/>
+              </span>
+            </Col>                        
+          </Row>
+        </Form-item>  
         <Form-item>
           <Button type="primary" @click="handleLogin('loginForm')" long>登录</Button>
         </Form-item>
@@ -21,6 +35,8 @@
   </template>
   <script>
   import { isValidUserName, isValidPassword } from 'utils/validate';
+  import { uuid } from 'utils/index';
+  
   import store from 'store'
   export default {
     name: 'login',
@@ -47,11 +63,14 @@
         }
       };
       return {
+        captchaUrl: '',
         successTips: '',
         errorTips: store.getters.tips,
         loginForm: {
           userName: '',
-          password: ''
+          password: '',
+          captcha: '',
+          captchaId: ''
         },
         loginRules: {
           userName: [
@@ -134,7 +153,8 @@
                 this.$router.push({ path: '/' });
               } else {
                 this.errorTips = res.desc;
-                this.$Message.error(this.errorTips);                
+                this.$Message.error(this.errorTips);    
+                this.changeCaptcha();            
               }
             }).catch(err => {
               this.$message.error(err);
@@ -145,7 +165,12 @@
             return false;
           }
         });
-      }
+      },
+    changeCaptcha(){          
+          this.loginForm.captchaId = uuid();
+          this.captchaUrl = '/yxkj-shelf/common/captcha.jhtml?captchaId='+ this.loginForm.captchaId;
+          console.info(this.captchaUrl);
+    }
     },
     init() {
 
@@ -160,6 +185,9 @@
         if (this.errorTips) {
           this.$Message.error(this.errorTips); 
         }
+        this.loginForm.captchaId = uuid();
+        this.captchaUrl = '/yxkj-shelf/common/captcha.jhtml?captchaId='+ this.loginForm.captchaId;
+        console.info(this.loginForm);
     },
   }
 
