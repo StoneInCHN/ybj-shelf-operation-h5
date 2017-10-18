@@ -29,3 +29,9 @@ export function getAreaList() {
       console.info("need get areas");
       return fetch('/yxkj-shelf/admin/company/getAreaList.jhtml', data)
 }
+export function getHomeData() {
+      const data = {
+          userName: store.getters.user.userName
+      };
+      return fetch('/yxkj-shelf/common//hp/statistics.jhtml', data)
+}

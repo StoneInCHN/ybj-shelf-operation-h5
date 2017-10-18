@@ -11,7 +11,7 @@
           </div>
           <div class="state-value">
             <div class="value">
-              230
+              {{homeData.orderCount}}
             </div>
             <div class="title">
               总订单数
@@ -26,7 +26,7 @@
           </div>
           <div class="state-value">
             <div class="value">
-              3490
+              {{homeData.userCount}}
             </div>
             <div class="title">
               总用户数
@@ -43,7 +43,7 @@
           </div>
           <div class="state-value">
             <div class="value">
-              22014
+              {{homeData.saleIncome.toFixed(2)}}
             </div>
             <div class="title">
               总销售收入(元)
@@ -58,7 +58,7 @@
           </div>
           <div class="state-value">
             <div class="value">
-              390
+              {{homeData.saleCost.toFixed(2)}}
             </div>
             <div class="title">
               总销售成本(元)
@@ -79,7 +79,7 @@
             <div class="staff_list">
               <div class="staff_progress">
                 <p> <span class="staff_name"> 毛利率 </span><span> =（销售收入 - 销售成本）/ 销售收入</span></p>
-                <Progress :percent="57.14" :stroke-width="8" status="active"></Progress>
+                <Progress :percent="homeData.profitRate*100" :stroke-width="8" status="active"></Progress>
               </div>
             </div>           
           </li>        
@@ -92,7 +92,7 @@
           <li>
             <div class="staff_list">
               <div>
-                <p><span class="red-txt">￥ 2.0</span><span class="staff_name"> 平均客单价</span></p>
+                <p><span class="red-txt">￥ {{homeData.avgUnitPrice.toFixed(2)}}</span><span class="staff_name"> 平均客单价</span></p>
                 <p><span> = 总销售收入 / 总订单数</span></p>
               </div>
             </div>           
@@ -122,14 +122,12 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
+import { getHomeData } from 'api/common';
 export default {
   name: 'dashboard',
         data () {
             return {
-                value1: 0,
-                value2: 0,
-                value3: 0,
-                speed:10000,
+                homeData: {}
             }
         },
         methods:{
@@ -146,7 +144,15 @@ export default {
              this.$Notice.success({
                     title: '欢迎使用 Mini优比家(货架)后台管理系统',
                     desc:  `当前时间为:${currentDateStr}`
-                });
+             });
+             getHomeData().then(response => {
+                if (response.code === '0000') {
+                  this.homeData = response.msg;
+                }               
+              }).catch(error => {
+                console.log(error)
+              });
+             
         }
 }
 </script>
