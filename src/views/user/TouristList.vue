@@ -35,12 +35,12 @@
             </div>
             <Page :total="this.pageTotal" show-total show-elevator @on-change="changePage" class="page-style"></Page>          
       </Col>
-    </Row> 
+    </Row>  
 </div>
 </template>
 
 <script>
-import { getUserList } from 'api/tourist';
+import { getUserList,exportData } from 'api/tourist';
 import { parseTime } from 'utils/index';
 import PayType from '../order/PaymentType.vue';
 import store from 'store';
@@ -60,12 +60,6 @@ export default {
                 companyName:''
               },
               userColumns: [
-                          // {
-                          //     type: 'selection',
-                          //     width: 60,
-                          //     align: 'center',
-                          //     fixed: 'left',
-                          // },
                           {
                               title: '用户ID',
                               key: 'id',
@@ -130,7 +124,6 @@ export default {
                               title: '所属公司',
                               key: 'companyName',
                               ellipsis:'true',
-                              sortType: 'desc',
                               align: 'center',
                               className: 'column-style',
                           },                          
@@ -148,47 +141,51 @@ export default {
               this.getUserList(pNum, this.filterData)
 		        },
             exportData () {
-                    var form = $("<form>");
-                    form.attr('style', 'display:none');
-                    form.attr('target', '_top');
-                    form.attr('method', 'post');
-                    form.attr('action', '/yxkj-shelf/admin/user/dataExport.jhtml');
-                    if (store.getters.token && store.getters.user && store.getters.user.userName) {
-                        var userName = $('<input>');
-                        userName.attr('type', 'hidden');
-                        userName.attr('name', "userName");                        
-                        userName.attr('value', store.getters.user.userName);      
-                        form.append(userName);
-                        var token = $('<input>');
-                        token.attr('type', 'hidden');
-                        token.attr('name', "token");                        
-                        token.attr('value', store.getters.token);      
-                        form.append(token);
-                      }
-                    if (this.filterData.nickName) {
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "nickName");
-                        input.attr('value', this.filterData.nickName);        
-                        form.append(input);
-                    }
-                    if (this.filterData.companyName) {
-                      console.info(this.filterData.companyName);
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "companyName");
-                        input.attr('value', this.filterData.companyName);       
-                        form.append(input);
-                    }     
-                    $('body').append(form);                
-                    form.submit();
-                    form.remove();                
+                    // var form = $("<form>");
+                    // form.attr('style', 'display:none');
+                    // form.attr('target', '_top');
+                    // form.attr('method', 'post');
+                    // form.attr('accept-charset', 'utf-8');
+                    // form.attr('action', '/yxkj-shelf/admin/user/dataExport.jhtml');
+                    // if (store.getters.token && store.getters.user && store.getters.user.userName) {
+                    //     var userName = $('<input>');
+                    //     userName.attr('type', 'hidden');
+                    //     userName.attr('name', "userName");                        
+                    //     userName.attr('value', store.getters.user.userName);      
+                    //     form.append(userName);
+                    //     var token = $('<input>');
+                    //     token.attr('type', 'hidden');
+                    //     token.attr('name', "token");                        
+                    //     token.attr('value', store.getters.token);      
+                    //     form.append(token);
+                    //   }
+                    // if (this.filterData.nickName) {
+                    //     var input = $('<input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "nickName");
+                    //     input.attr('value', this.filterData.nickName);    
+                    //     console.info(this.filterData.nickName);    
+                    //     form.append(input);
+                    // }
+                    // if (this.filterData.companyName) {
+                    //     var input = $('<input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "companyName");
+                    //     input.attr('value', this.filterData.companyName);       
+                    //     form.append(input);
+                    // }     
+                    // $('body').append(form);                
+                    // form.submit();
+                    // form.remove();    
+                    window.open("/yxkj-shelf/admin/user/dataExport?userName="+store.getters.user.userName+"&token="+store.getters.token+"&nickName="+this.filterData.nickName+"&companyName="+this.filterData.companyName, "_top");
+
             },
             getUserList(pNum, filterData) {
               getUserList(pNum, this.pageSize, filterData).then(response => {
                 if (response.code === '0000') {
                   this.pageTotal = response.page.total;
                   this.pageNumber = response.page.pageNumber;
+                  console.info(response.msg);
                   this.page_list= response.msg;
                   this.list_loadding=false;
                 }                

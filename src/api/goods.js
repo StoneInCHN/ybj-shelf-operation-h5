@@ -39,3 +39,13 @@ export function updateGoods(id,dataInfo) {
   };
   return fetch('/yxkj-shelf/admin/goods/updateGoods.jhtml', data)
 }
+export function isExistSn(sn) {
+  var goodsData = {}
+  goodsData.sn = sn
+  const data = {  
+      goodsData: goodsData,  
+      userName: store.getters.user.userName
+  };
+  return fetch('/yxkj-shelf/admin/goods/isExistSn.jhtml', data)
+}
+

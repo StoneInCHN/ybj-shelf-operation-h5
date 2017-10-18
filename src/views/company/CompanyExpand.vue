@@ -66,7 +66,7 @@
                         key: 'shelfCate',
                         align: 'center',
                         render: (h, params) => {
-                            return params.row.shelfCate.height + "m";
+                            return params.row.shelfCate.spec;
                         }
                     },
                     {

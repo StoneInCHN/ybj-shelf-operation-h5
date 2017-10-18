@@ -5,7 +5,7 @@
                 <Icon type="clipboard"></Icon>&nbsp;&nbsp;公司新增
             </p>   
             <Form ref="dataInfo" :model="dataInfo" :rules="ruleValidate" :label-width="100" style="width:60%">
-                <FormItem label="公司编号" prop="sn">
+        <!--         <FormItem label="公司编号" prop="sn">
                     <Row>
                       <Col span="20">
                         <Input v-model="dataInfo.sn" disabled></Input>
@@ -15,19 +15,19 @@
                           <Icon size="large" color="#0000ff" type="information-circled"></Icon>
                         </Tooltip>
                       </Col>
-                    </Row>
+                    </Row> -->
                 </FormItem>
                 <FormItem label="公司全称" prop="fullName">
-                    <Input v-model="dataInfo.fullName" placeholder="请输入公司全称"></Input>
+                    <Input v-model="dataInfo.fullName" placeholder="请输入公司全称" @on-blur="checkComanyExist"></Input>
                 </FormItem>
                 <FormItem label="公司展示名" prop="displayName">
-                    <Input v-model="dataInfo.displayName" placeholder="请输入公司展示名(缩写)"></Input>
+                    <Input v-model="dataInfo.displayName" placeholder="请输入公司展示名(缩写)" @on-blur="checkComanyExist"></Input>
                 </FormItem>
                 <FormItem label="联系人" prop="contactPerson">
-                    <Input v-model="dataInfo.contactPerson" placeholder="请输入公司地址"></Input>
+                    <Input v-model="dataInfo.contactPerson" placeholder="请输入联系人"></Input>
                 </FormItem>     
                 <FormItem label="联系电话" prop="contactPhone">
-                    <Input v-model="dataInfo.contactPhone" placeholder="请输入公司名称"></Input>
+                    <Input v-model="dataInfo.contactPhone" placeholder="请输入联系电话"></Input>
                 </FormItem>
                 <FormItem label="公司地址" prop="area">
                     <Cascader v-model="dataInfo.area" placeholder="请选择公司地址" :data="areas" filterable @on-change="selecteArea"></Cascader>
@@ -56,7 +56,7 @@
 </template>
 <script>
     import { isValidMobile } from 'utils/validate';
-    import { getShelfList,addCompany } from 'api/company'; 
+    import { getShelfList,addCompany,isExistCompany } from 'api/company'; 
     import ShelftRow from './ShelfRow.vue';  
     import store from 'store' 
     export default {
@@ -70,7 +70,29 @@
                 callback();
               }
             };
+            const isExistName = (rule, value, callback) => {
+                  if (this.nameExist) {
+                    callback(new Error('该公司名称已被使用，请重新填写'));
+                  } else {
+                    callback();
+                  } 
+            }; 
+            const maxLength = (rule, value, callback) => {
+                if (value.length >= 20) {
+                  callback(new Error('最多输入20个字符'));
+                } else {
+                  callback();
+                }
+            };
+            const maxRemark = (rule, value, callback) => {
+                if (value.length >= 200) {
+                  callback(new Error('最多输入200个字符'));
+                } else {
+                  callback();
+                }
+            };
             return {
+                nameExist: false,
                 dataInfo: {
                     sn: '00000002',
                     fullName: '',
@@ -85,10 +107,14 @@
                 },
                 ruleValidate: {
                     fullName: [
-                        { required: true, message: '公司全名不能为空', trigger: 'blur' }
+                        { required: true, message: '公司全名不能为空', trigger: 'blur' },
+                        { required: true, trigger: 'blur', validator: isExistName },
+                        { required: true, trigger: 'blur', validator: maxLength }
                     ],
                     displayName: [
-                        { required: true, message: '公司展示名称不能为空', trigger: 'blur' }
+                        { required: true, message: '公司展示名称不能为空', trigger: 'blur' },
+                        { required: true, trigger: 'blur', validator: isExistName },
+                        { required: true, trigger: 'blur', validator: maxLength }
                     ],
                     contactPerson: [
                         { required: true, message: '公司联系人不能为空', trigger: 'blur' }            
@@ -106,7 +132,8 @@
                         { required: true, type: 'array', min: 1, message: '至少选择一个货架', trigger: 'change' },
                     ],
                     remark: [
-                        { type: 'string', min: 2, message: '备注不能少于2字', trigger: 'blur' }
+                        { type: 'string', min: 2, message: '备注不能少于2字', trigger: 'blur' },
+                        { required: true, trigger: 'blur', validator: maxRemark }                        
                     ]
                 },
                 areas: []
@@ -157,6 +184,18 @@
               }).catch(error => {
                 console.log(error)
               });
+            },
+            checkComanyExist() {
+                console.info("checkComanyExist");
+                isExistCompany(this.dataInfo).then(response => {
+                    if (response.code === '0000' && response.desc === 'true') {
+                        this.nameExist =  true;                       
+                    }else{
+                        this.nameExist =  false;
+                    }
+                }).catch(error => {
+                    
+                }); 
             }
         },
         created () {

@@ -66,7 +66,7 @@
                 this.selectKeys = targetKeys;
             },
             render (item) {
-                return item.label + ' - ' + item.sn + ' - ' + item.spec;
+                return item.label + ' - ' + item.spec + ' - ' + item.sn;
             },
             reloadData(){
               getAllGoodsProfile().then(response => {

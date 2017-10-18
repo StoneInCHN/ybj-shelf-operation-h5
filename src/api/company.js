@@ -57,7 +57,16 @@ export function getAllGoodsProfile() {
   };
   return fetch('/yxkj-shelf/admin/company/getAllGoodsProfile.jhtml', data)
 }
-
+export function isExistCompany(dataInfo) {
+  var companyData = {}
+  companyData.displayName = dataInfo.displayName;
+  companyData.fullName = dataInfo.fullName;
+  const data = {  
+      companyData: companyData,  
+      userName: store.getters.user.userName
+  };
+  return fetch('/yxkj-shelf/admin/company/isExistCompany.jhtml', data)
+}
 
 
 

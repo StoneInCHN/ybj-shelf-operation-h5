@@ -267,40 +267,42 @@ export default {
               this.getOrderList(pNum,this.filterData)
 		        },
             exportData () {
-                    var form = $("<form>");
-                    form.attr('style', 'display:none');
-                    form.attr('target', '_top');
-                    form.attr('method', 'post');
-                    form.attr('action', '/yxkj-shelf/admin/order/dataExport.jhtml');
-                    if (store.getters.token && store.getters.user && store.getters.user.userName) {
-                        var userName = $('<input>');
-                        userName.attr('type', 'hidden');
-                        userName.attr('name', "userName");                        
-                        userName.attr('value', store.getters.user.userName);      
-                        form.append(userName);
-                        var token = $('<input>');
-                        token.attr('type', 'hidden');
-                        token.attr('name', "token");                        
-                        token.attr('value', store.getters.token);      
-                        form.append(token);
-                      }
-                    if (this.filterData.companyName) {
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "companyName");
-                        input.attr('value', this.filterData.companyName);        
-                        form.append(input);
-                    }
-                    if (this.filterData.companySn) {
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "companySn");
-                        input.attr('value', this.filterData.companySn);       
-                        form.append(input);
-                    }     
-                    $('body').append(form);                
-                    form.submit();
-                    form.remove();                
+                    // var form = $("<form>");
+                    // form.attr('style', 'display:none');
+                    // form.attr('target', '_top');
+                    // form.attr('method', 'post');
+                    // form.attr('accept-charset', 'utf-8');
+                    // form.attr('action', '/yxkj-shelf/admin/order/dataExport.jhtml');
+                    // if (store.getters.token && store.getters.user && store.getters.user.userName) {
+                    //     var userName = $('<input>');
+                    //     userName.attr('type', 'hidden');
+                    //     userName.attr('name', "userName");                        
+                    //     userName.attr('value', store.getters.user.userName);      
+                    //     form.append(userName);
+                    //     var token = $('<input>');
+                    //     token.attr('type', 'hidden');
+                    //     token.attr('name', "token");                        
+                    //     token.attr('value', store.getters.token);      
+                    //     form.append(token);
+                    //   }
+                    // if (this.filterData.companyName) {
+                    //     var input = $('<input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "companyName");
+                    //     input.attr('value', this.filterData.companyName);        
+                    //     form.append(input);
+                    // }
+                    // if (this.filterData.companySn) {
+                    //     var input = $('<input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "companySn");
+                    //     input.attr('value', this.filterData.companySn);       
+                    //     form.append(input);
+                    // }     
+                    // $('body').append(form);                
+                    // form.submit();
+                    // form.remove();   
+                    window.open("/yxkj-shelf/admin/order/dataExport?userName="+store.getters.user.userName+"&token="+store.getters.token+"&companyName="+this.filterData.companyName+"&companySn="+this.filterData.companySn+"&beginDate="+parseTime(this.filterData.beginDate)+"&endDate="+parseTime(this.filterData.endDate), "_top");             
             },
             getOrderList(pNum,filterData) {
               getOrderList(pNum, this.pageSize, filterData).then(response => {

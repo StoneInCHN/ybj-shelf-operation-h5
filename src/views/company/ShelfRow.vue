@@ -2,10 +2,10 @@
     <div>
         <Row>
             <Col span="6">
-                 <Checkbox v-model="shelf.need" @on-change="need">{{shelf.height}}m</Checkbox>    
+                 <Checkbox v-model="shelf.need" @on-change="need">{{shelf.spec}}</Checkbox>    
             </Col>
-            <Col span="1">
-                 x    
+            <Col span="2">
+                 数量   
             </Col>
             <Col span="8">
                  <InputNumber :max="10" :min="0" v-model="shelf.count" size="small" style="width:50px" @on-change="selectCount" :disabled="disabled"></InputNumber>个 
@@ -29,7 +29,11 @@
             },
             need(){
                 this.disabled = !this.disabled;
-
+                if (this.disabled) {
+                    this.shelf.count = 0;
+                }else{
+                    this.shelf.count = 1;
+                }
             }
         },
         mounted(){}

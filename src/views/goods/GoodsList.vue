@@ -266,40 +266,42 @@ export default {
               this.visible = true;
             },  
             exportData () {
-                    var form = $("<form>");
-                    form.attr('style', 'display:none');
-                    form.attr('target', '_top');
-                    form.attr('method', 'post');
-                    form.attr('action', '/yxkj-shelf/admin/goods/dataExport.jhtml');
-                    if (store.getters.token && store.getters.user && store.getters.user.userName) {
-                        var userName = $('<input>');
-                        userName.attr('type', 'hidden');
-                        userName.attr('name', "userName");                        
-                        userName.attr('value', store.getters.user.userName);      
-                        form.append(userName);
-                        var token = $('<input>');
-                        token.attr('type', 'hidden');
-                        token.attr('name', "token");                        
-                        token.attr('value', store.getters.token);      
-                        form.append(token);
-                      }
-                    if (this.filterData.sn) {
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "sn");
-                        input.attr('value', this.filterData.sn);        
-                        form.append(input);
-                    }
-                    if (this.filterData.name) {
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "name");
-                        input.attr('value', this.filterData.name);       
-                        form.append(input);
-                    }     
-                    $('body').append(form);                
-                    form.submit();
-                    form.remove();                
+                    // var form = $("<form>");
+                    // form.attr('style', 'display:none');
+                    // form.attr('target', '_top');
+                    // form.attr('method', 'post');
+                    // form.attr('accept-charset', 'utf-8');
+                    // form.attr('action', '/yxkj-shelf/admin/goods/dataExport.jhtml');
+                    // if (store.getters.token && store.getters.user && store.getters.user.userName) {
+                    //     var userName = $('<input>');
+                    //     userName.attr('type', 'hidden');
+                    //     userName.attr('name', "userName");                        
+                    //     userName.attr('value', store.getters.user.userName);      
+                    //     form.append(userName);
+                    //     var token = $('<input>');
+                    //     token.attr('type', 'hidden');
+                    //     token.attr('name', "token");                        
+                    //     token.attr('value', store.getters.token);      
+                    //     form.append(token);
+                    //   }
+                    // if (this.filterData.sn) {
+                    //     var input = $('<input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "sn");
+                    //     input.attr('value', this.filterData.sn);        
+                    //     form.append(input);
+                    // }
+                    // if (this.filterData.name) {
+                    //     var input = $('<input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "name");
+                    //     input.attr('value', this.filterData.name);       
+                    //     form.append(input);
+                    // }     
+                    // $('body').append(form);                
+                    // form.submit();
+                    // form.remove();     
+                    window.open("/yxkj-shelf/admin/goods/dataExport?userName="+store.getters.user.userName+"&token="+store.getters.token+"&sn="+this.filterData.sn+"&name="+this.filterData.name, "_top");            
             },
             getGoodsList(pNum, filterData) {
               getGoodsList(pNum, this.pageSize, filterData).then(response => {
@@ -327,7 +329,14 @@ export default {
             },
             handleSuccess (res, file) {
                 this.visible = false;
-                this.$Message.success('导入成功！');
+                this.$Modal.warning({
+                  title:'提示',
+                  content:res.desc,
+                  onOk:(()=>{
+
+                  })
+                });
+                //this.$Message.success('导入成功！');                
                 this.changePage(1);
             },     
   },

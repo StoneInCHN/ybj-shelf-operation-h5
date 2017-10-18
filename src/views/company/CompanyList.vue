@@ -7,7 +7,7 @@
                     <Row slot="content">
                       <Col span="5">              
                           公司名称
-                          <Input placeholder="公司名称" v-model="filterData.fullName" class="searchInput" @on-enter="changePage(1)"></Input>
+                          <Input placeholder="公司名称" v-model="filterData.displayName" class="searchInput" @on-enter="changePage(1)"></Input>
                       </Col>
                       <Col span="5">              
                           公司编号
@@ -63,7 +63,7 @@ export default {
               list_loadding:false,
               filterData:{
                 sn:'',
-                fullName:''
+                displayName:''
               },
               companyColumns: [
                           {
@@ -129,7 +129,7 @@ export default {
                                 const shelves=params.row.goodsShelves;
                                 let htmlText = '';
                                 for (var i = 0; i < shelves.length; i++) {
-                                  htmlText = htmlText + " "+shelves[i].shelfCate.height + "m x " + shelves[i].count +";"
+                                  htmlText = htmlText + " "+shelves[i].shelfCate.spec + " x " + shelves[i].count +";"
                                 }
                                 return htmlText;
                               }
@@ -265,40 +265,42 @@ export default {
               this.getCompanyList(pNum, this.filterData); 
             },
             exportData () {
-                    var form = $("<form>");
-                    form.attr('style', 'display:none');
-                    form.attr('target', '_top');
-                    form.attr('method', 'post');
-                    form.attr('action', '/yxkj-shelf/admin/company/dataExport.jhtml');
-                    if (store.getters.token && store.getters.user && store.getters.user.userName) {
-                        var userName = $('<input>');
-                        userName.attr('type', 'hidden');
-                        userName.attr('name', "userName");                        
-                        userName.attr('value', store.getters.user.userName);      
-                        form.append(userName);
-                        var token = $('<input>');
-                        token.attr('type', 'hidden');
-                        token.attr('name', "token");                        
-                        token.attr('value', store.getters.token);      
-                        form.append(token);
-                      }
-                    if (this.filterData.sn) {
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "sn");
-                        input.attr('value', this.filterData.sn);        
-                        form.append(input);
-                    }
-                    if (this.filterData.fullName) {
-                        var input = $('<input>');
-                        input.attr('type', 'hidden');
-                        input.attr('name', "fullName");
-                        input.attr('value', this.filterData.fullName);       
-                        form.append(input);
-                    }     
-                    $('body').append(form);                
-                    form.submit();
-                    form.remove();                
+                    // var form = $("<Form>");
+                    // form.attr('style', 'display:none');
+                    // form.attr('target', '_top');
+                    // form.attr('method', 'post');
+                    // //form.attr('accept-charset', 'utf-8');
+                    // form.attr('action', '/yxkj-shelf/admin/company/dataExport.jhtml');
+                    // if (store.getters.token && store.getters.user && store.getters.user.userName) {
+                    //     var userName = $('<Input>');
+                    //     userName.attr('type', 'hidden');
+                    //     userName.attr('name', "userName");                        
+                    //     userName.attr('value', store.getters.user.userName);      
+                    //     form.append(userName);
+                    //     var token = $('<Input>');
+                    //     token.attr('type', 'hidden');
+                    //     token.attr('name', "token");                        
+                    //     token.attr('value', store.getters.token);      
+                    //     form.append(token);
+                    //   }
+                    // if (this.filterData.sn) {
+                    //     var input = $('<Input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "sn");
+                    //     input.attr('value', this.filterData.sn);        
+                    //     form.append(input);
+                    // }
+                    // if (this.filterData.displayName) {
+                    //     var input = $('<Input>');
+                    //     input.attr('type', 'hidden');
+                    //     input.attr('name', "displayName");
+                    //     input.attr('value', this.filterData.displayName);       
+                    //     form.append(input);
+                    // }     
+                    // $('body').append(form);                
+                    // form.submit();
+                    // form.remove();    
+                    window.open("/yxkj-shelf/admin/company/dataExport?userName="+store.getters.user.userName+"&token="+store.getters.token+"&sn="+this.filterData.sn+"&displayName="+this.filterData.displayName, "_top");            
             },
             getCompanyList(pNum, filterData) {
               getCompanyList(pNum, this.pageSize, filterData).then(response => {

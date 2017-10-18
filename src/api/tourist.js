@@ -10,5 +10,10 @@ export function getUserList(pNum, pSize, filterData) {
   };
   return fetch('/yxkj-shelf/admin/user/getUserList.jhtml', data)
 }
-
+// export function exportData() {
+//   const data = {
+//       userName: store.getters.user.userName
+//   };
+//   return fetch('/yxkj-shelf/admin/user/dataExport.jhtml', data)
+// }
 

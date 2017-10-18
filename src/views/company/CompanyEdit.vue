@@ -26,10 +26,10 @@
                     <Input v-model="dataInfo.displayName" placeholder="请输入公司展示名(缩写)"></Input>
                 </FormItem>
                 <FormItem label="联系人" prop="contactPerson">
-                    <Input v-model="dataInfo.contactPerson" placeholder="请输入公司地址"></Input>
+                    <Input v-model="dataInfo.contactPerson" placeholder="请输入联系人"></Input>
                 </FormItem>     
                 <FormItem label="联系电话" prop="contactPhone">
-                    <Input v-model="dataInfo.contactPhone" placeholder="请输入公司名称"></Input>
+                    <Input v-model="dataInfo.contactPhone" placeholder="请输入联系电话"></Input>
                 </FormItem>
                 <FormItem label="公司地址">            
                     {{dataInfo.areaFullName}}
@@ -74,15 +74,24 @@
                 callback();
               }
             };
+            const maxLength = (rule, value, callback) => {
+                if (value.length >= 20) {
+                  callback(new Error('最多输入20个字符'));
+                } else {
+                  callback();
+                }
+            };
             return {
                 id:null,
                 dataInfo: {},
                 ruleValidate: {
                     fullName: [
-                        { required: true, message: '公司名称不能为空', trigger: 'blur' }
+                        { required: true, message: '公司名称不能为空', trigger: 'blur' },
+                        { required: true, trigger: 'blur', validator: maxLength }
                     ],
                     displayName: [
-                        { required: true, message: '公司展示名称不能为空', trigger: 'blur' }
+                        { required: true, message: '公司展示名称不能为空', trigger: 'blur' },
+                        { required: true, trigger: 'blur', validator: maxLength }
                     ],
                     contactPerson: [
                         { required: true, message: '公司联系人不能为空', trigger: 'blur' }            
