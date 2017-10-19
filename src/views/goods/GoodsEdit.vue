@@ -6,7 +6,7 @@
             </p>  
             <Form ref="dataInfo" :model="dataInfo" :rules="ruleValidate" :label-width="80" style="width:60%">
                 <FormItem label="商品条码" prop="sn">
-                    <Input v-model="dataInfo.sn"  placeholder="请输入商品条码"></Input>
+                    <Input v-model="dataInfo.sn"  placeholder="请输入商品条码" @on-blur="checkSnExist"></Input>
                 </FormItem>
                 <FormItem label="商品名称" prop="name">
                     <Input v-model="dataInfo.name" placeholder="请输入商品名称"></Input>
@@ -66,8 +66,8 @@
   </div>
 </template>
 <script>
-    import { isPositiveNumber } from 'utils/validate';
-    import { getGoodsData, updateGoods} from 'api/goods';  
+    import { isPositiveNumber, validSn} from 'utils/validate';
+    import { getGoodsData, updateGoods, isExistSn} from 'api/goods';  
     import store from 'store' 
     export default {
         //name: 'add',
@@ -79,7 +79,22 @@
                 callback();
               }
             };
+            const checkSn = (rule, value, callback) => {
+              if (!validSn(value)) {
+                callback(new Error('请输入正确的商品编号（允许数字、空格、字母）'));
+              } else {
+                callback();
+              }
+            }; 
+            const isExistSn = (rule, value, callback) => {
+                  if (this.snExist) {
+                    callback(new Error('该商品条码已经存在，请重新填写'));
+                  } else {
+                    callback();
+                  } 
+            }; 
             return {
+                snExist: null,
                 id:null,
                 dataInfo: {
                     sn: '',
@@ -91,7 +106,8 @@
                 },
                 ruleValidate: {
                     sn: [
-                        { required: true, message: '商品条码不能为空', trigger: 'blur' }
+                        { required: true, trigger: 'blur', validator: checkSn },
+                        { required: true, trigger: 'blur', validator: isExistSn }
                     ],
                     name: [
                         { required: true, message: '商品名称不能为空', trigger: 'blur' }            
@@ -122,6 +138,8 @@
         },
         methods: {
             handleSubmit (name) {
+                this.checkSnExist();
+                console.info(this.snExist) 
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         console.info(this.id,this.dataInfo);                        
@@ -183,6 +201,18 @@
                 }).catch(error => {
                     console.log(error)
                 });
+            },
+            checkSnExist() {
+                console.info("checkSnExist");
+                isExistSn(this.dataInfo.sn, this.id).then(response => {
+                    if (response.code === '0000' && response.desc === 'true') {
+                        this.snExist =  true;                       
+                    }else{
+                        this.snExist =  false;
+                    }
+                }).catch(error => {
+                    
+                }); 
             }
         },
         created () {

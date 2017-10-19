@@ -39,10 +39,11 @@ export function updateGoods(id,dataInfo) {
   };
   return fetch('/yxkj-shelf/admin/goods/updateGoods.jhtml', data)
 }
-export function isExistSn(sn) {
+export function isExistSn(sn,id) {
   var goodsData = {}
   goodsData.sn = sn
   const data = {  
+      id: id,
       goodsData: goodsData,  
       userName: store.getters.user.userName
   };

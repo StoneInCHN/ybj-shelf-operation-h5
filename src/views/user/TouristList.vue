@@ -111,12 +111,12 @@ export default {
                           },
                           {
                               title: '首次使用时间',
-                              key: 'regTime',
+                              key: 'createDate',
                               ellipsis:'true',
                               align: 'center',
                               className: 'column-style',
                               render: (h, params) => {
-                                return parseTime(params.row.regTime);
+                                return parseTime(params.row.createDate);
                               }
                               
                           },   
@@ -185,7 +185,7 @@ export default {
                 if (response.code === '0000') {
                   this.pageTotal = response.page.total;
                   this.pageNumber = response.page.pageNumber;
-                  console.info(response.msg);
+                  //console.info(response.msg);
                   this.page_list= response.msg;
                   this.list_loadding=false;
                 }                

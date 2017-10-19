@@ -133,10 +133,10 @@
         methods: {
             handleSubmit (name) {
                 this.checkSnExist();
-                this.$refs[name].validate((valid) => {
-                    console.info("hellow");
+                this.$refs[name].validate((valid) => {                  
                     if (valid) {
                         addGoods(this.dataInfo).then(response => {
+                            console.info("response");
                             if (response.code === '0000') {
                                 this.$Message.success('提交成功!');
                                 this.$router.push({path:'/goodsList'})
@@ -182,7 +182,7 @@
             },
             checkSnExist() {
                 console.info("checkSnExist");
-                isExistSn(this.dataInfo.sn).then(response => {
+                isExistSn(this.dataInfo.sn, null).then(response => {
                     if (response.code === '0000' && response.desc === 'true') {
                         this.snExist =  true;                       
                     }else{
