@@ -1,12 +1,13 @@
 import store from '../store';
 import {fetch} from 'utils/fetch';
 
-export function login(userName, password, captcha, captchaId) {
+export function login(userName, password, captcha, captchaId, autoLogin) {
   const data = {
       userName: userName,
       password: password,
       captcha: captcha,
-      captchaId: captchaId
+      captchaId: captchaId,
+      autoLogin: autoLogin
   };
   return fetch('/yxkj-shelf/common/login.jhtml', data)
 

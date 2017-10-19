@@ -2,8 +2,8 @@
     <div class="demo-upload">
         <img :src="url" @click="handleView">
 
-         <Modal title="查看图片" v-model="visible">
-                <img :src="url" v-if="visible" style="width: 100%">
+         <Modal title="查看图片" v-model="visible"  class="show-modal" cancel-text="">
+            <img :src="url" v-if="visible" style="width: 100%">
          </Modal>
     </div>
 </template>
@@ -24,6 +24,9 @@
     }
 </script>
 <style scoped>
+    .show-modal button{
+        display: none;
+    }
     .demo-upload{
         display: inline-block;
         width: 60px;

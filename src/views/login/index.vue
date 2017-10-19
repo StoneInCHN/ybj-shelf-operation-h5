@@ -25,18 +25,20 @@
               </span>
             </Col>                        
           </Row>
-        </Form-item>  
+        </Form-item>          
         <Form-item>
+          <Checkbox v-model="loginForm.rememberMe" style="color: #fff;margin-left:8px;">&nbsp;记住用户名及密码</Checkbox>
+          <span class='tips'>{{errorTips}}</span>
           <Button type="primary" @click="handleLogin('loginForm')" long>登录</Button>
         </Form-item>
-        <div class='tips'>{{errorTips}}</div>
+        
       </Form>
     </div>
   </template>
   <script>
   import { isValidUserName, isValidPassword } from 'utils/validate';
   import { uuid } from 'utils/index';
-  
+  import Cookies from 'js-cookie';
   import store from 'store'
   export default {
     name: 'login',
@@ -62,15 +64,17 @@
           callback();
         }
       };
-      return {
+      return {        
         captchaUrl: '',
         successTips: '',
         errorTips: store.getters.tips,
         loginForm: {
-          userName: '',
-          password: '',
+          userName: Cookies.get('Admin-userName'),
+          password: Cookies.get('Admin-password'),
           captcha: '',
-          captchaId: ''
+          captchaId: '',
+          rememberMe: Cookies.get('RememberMe'),
+          autoLogin: false
         },
         loginRules: {
           userName: [
@@ -187,7 +191,7 @@
         }
         this.loginForm.captchaId = uuid();
         this.captchaUrl = '/yxkj-shelf/common/captcha.jhtml?captchaId='+ this.loginForm.captchaId;
-        console.info(this.loginForm);
+        //console.info(this.loginForm);
     },
   }
 
@@ -321,6 +325,7 @@
     font-size: 14px;
     color: #ed3f14;
     margin-bottom: 5px;
+    float:right;
   }
 
   .login-container {

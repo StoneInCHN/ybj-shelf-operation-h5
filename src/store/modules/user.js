@@ -42,12 +42,15 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const userName = userInfo.userName.trim();
-      const password = userInfo.password.trim();
-      const captcha = userInfo.captcha.trim();
-      const captchaId = userInfo.captchaId;      
+      var userName = userInfo.userName
+      var password = userInfo.password
+      var captcha = userInfo.captcha
+      var captchaId = userInfo.captchaId
+      var rememberMe = userInfo.rememberMe
+      var autoLogin = userInfo.autoLogin
+      //console.info(userInfo);
       return new Promise((resolve, reject) => {
-        login(userName, password, captcha, captchaId).then(response => {
+        login(userName, password, captcha, captchaId, autoLogin).then(response => {
           if(response.code === '0000' && response.msg.roles.length > 0) {
               const admin = response.msg;          
               commit('SET_USER', admin);  
@@ -57,7 +60,9 @@ const user = {
               Cookies.set('Admin-User', admin); 
               Cookies.set('Admin-userName', userName); 
               Cookies.set('Admin-password', password); 
-
+              Cookies.set('Admin-captcha', captcha); 
+              Cookies.set('Admin-captchaId', captchaId);
+              Cookies.set('RememberMe', rememberMe); 
               //根据后台返回，获取可访问的菜单权限   
               asyncRouterMap[0].children = [];
               var accessMenu = asyncRouterMap;          
@@ -82,7 +87,7 @@ const user = {
               commit('SET_ROUTERS', accessMenu); 
               
               // 动态添加可访问路由表 
-              router.addRoutes(accessMenu);     
+              router.addRoutes(accessMenu);    
           }else{//例如 服务端JWT的token过期，返回 {"code":"1000","desc":"Token失效,请重新登录"}
               //清除store中的数据，router.beforeEach 时候会检查是否有当前用户，如果没有 重定向到登录页面
               commit('SET_TOKEN', '');
@@ -90,8 +95,10 @@ const user = {
               commit('SET_ROUTERS', []); 
               Cookies.remove('Admin-Token');
               Cookies.remove('Admin-User');
-              Cookies.remove('Admin-userName');
-              Cookies.remove('Admin-password');
+              if (!Cookies.get('RememberMe')) {
+                  Cookies.remove('Admin-userName');
+                  Cookies.remove('Admin-password');
+              } 
           }
           resolve(response);
         }).catch(error => {
@@ -107,10 +114,12 @@ const user = {
           commit('SET_USER', []);
           commit('SET_ROUTERS', []);  
           Cookies.remove('Admin-Token');
-          Cookies.remove('Admin-User');
-          Cookies.remove('Admin-userName');
-          Cookies.remove('Admin-password');
-          
+          Cookies.remove('Admin-User');      
+          console.info(Cookies.get('RememberMe'));   
+          if (!Cookies.get('RememberMe')) {
+              Cookies.remove('Admin-userName');
+              Cookies.remove('Admin-password');
+          }          
           resolve();
         }).catch(error => {
           reject(error);
@@ -127,8 +136,10 @@ const user = {
           commit('SET_ROUTERS', []); 
           Cookies.remove('Admin-Token');
           Cookies.remove('Admin-User');
-          Cookies.remove('Admin-userName');
-          Cookies.remove('Admin-password');
+          if (!Cookies.get('RememberMe')) {
+              Cookies.remove('Admin-userName');
+              Cookies.remove('Admin-password');
+          } 
           resolve();
       });
     },

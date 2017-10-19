@@ -27,11 +27,13 @@ router.beforeEach((to, from, next) => {
           //console.info("666");
           next();
         }else{
-          //console.info("555 relogin");
+          console.info("autoLogin");
           var loginForm = {}
           loginForm.userName = Cookies.get('Admin-userName')
           loginForm.password = Cookies.get('Admin-password')
-          //console.info(loginForm);
+          loginForm.captcha = Cookies.get('Admin-captcha')
+          loginForm.captchaId = Cookies.get('Admin-captchaId')
+          loginForm.autoLogin = true
           store.dispatch('Login', loginForm).then(res => {
               
           }).catch(err => {

@@ -43,7 +43,7 @@
           </div>
           <div class="state-value">
             <div class="value">
-              {{homeData.saleIncome.toFixed(2)}}
+              {{saleIncome}}
             </div>
             <div class="title">
               总销售收入(元)
@@ -58,7 +58,7 @@
           </div>
           <div class="state-value">
             <div class="value">
-              {{homeData.saleCost.toFixed(2)}}
+              {{saleCost}}
             </div>
             <div class="title">
               总销售成本(元)
@@ -79,7 +79,7 @@
             <div class="staff_list">
               <div class="staff_progress">
                 <p> <span class="staff_name"> 毛利率 </span><span> =（销售收入 - 销售成本）/ 销售收入</span></p>
-                <Progress :percent="homeData.profitRate*100" :stroke-width="8" status="active"></Progress>
+                <Progress :percent="profitRate*100" :stroke-width="8" status="active"></Progress>
               </div>
             </div>           
           </li>        
@@ -92,7 +92,7 @@
           <li>
             <div class="staff_list">
               <div>
-                <p><span class="red-txt">￥ {{homeData.avgUnitPrice.toFixed(2)}}</span><span class="staff_name"> 平均客单价</span></p>
+                <p><span class="red-txt">￥ {{avgUnitPrice}}</span><span class="staff_name"> 平均客单价</span></p>
                 <p><span> = 总销售收入 / 总订单数</span></p>
               </div>
             </div>           
@@ -127,7 +127,11 @@ export default {
   name: 'dashboard',
         data () {
             return {
-                homeData: {}
+                homeData: {},
+                saleIncome: 0,
+                saleCost: 0,
+                profitRate: 0,
+                avgUnitPrice: 0,
             }
         },
         methods:{
@@ -148,11 +152,14 @@ export default {
              getHomeData().then(response => {
                 if (response.code === '0000') {
                   this.homeData = response.msg;
+                  this.saleIncome=this.homeData.saleIncome.toFixed(2)
+                  this.saleCost= this.homeData.saleCost.toFixed(2)
+                  this.profitRate=this.homeData.profitRate.toFixed(2)
+                  this.avgUnitPrice=this.homeData.avgUnitPrice.toFixed(2)
                 }               
               }).catch(error => {
                 console.log(error)
-              });
-             
+              });             
         }
 }
 </script>
