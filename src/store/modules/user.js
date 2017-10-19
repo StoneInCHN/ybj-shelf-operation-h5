@@ -116,7 +116,8 @@ const user = {
           Cookies.remove('Admin-Token');
           Cookies.remove('Admin-User');      
           console.info(Cookies.get('RememberMe'));   
-          if (!Cookies.get('RememberMe')) {
+          if (Cookies.get('RememberMe') != 'true' ) {
+            console.info("remove admin 111111 from cookies")
               Cookies.remove('Admin-userName');
               Cookies.remove('Admin-password');
           }          

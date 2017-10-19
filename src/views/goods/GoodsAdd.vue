@@ -49,7 +49,7 @@
                         </div>
                     </Upload> 
                     <Input v-model="dataInfo.url" v-show="false"></Input>           
-                    <Modal title="查看图片" v-model="visible">
+                    <Modal title="查看图片" v-model="visible" cancel-text="">
                         <img :src="dataInfo.url" v-if="visible" style="width: 100%">
                     </Modal>
                 </FormItem>

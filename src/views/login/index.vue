@@ -15,7 +15,7 @@
         <Form-item prop="captcha">
           <Row>
             <Col span="17">
-              <Input type="text" v-model="loginForm.captcha" placeholder="验证码">
+              <Input type="text" v-model="loginForm.captcha" placeholder="验证码" @keyup.enter.native="handleLogin">
                 <Icon type="ios-locked-outline" slot="prepend"></Icon>
               </Input>
             </Col>
@@ -30,8 +30,7 @@
           <Checkbox v-model="loginForm.rememberMe" style="color: #fff;margin-left:8px;">&nbsp;记住用户名及密码</Checkbox>
           <span class='tips'>{{errorTips}}</span>
           <Button type="primary" @click="handleLogin('loginForm')" long>登录</Button>
-        </Form-item>
-        
+        </Form-item>        
       </Form>
     </div>
   </template>
@@ -73,7 +72,7 @@
           password: Cookies.get('Admin-password'),
           captcha: '',
           captchaId: '',
-          rememberMe: Cookies.get('RememberMe'),
+          rememberMe: false,
           autoLogin: false
         },
         loginRules: {
@@ -191,7 +190,9 @@
         }
         this.loginForm.captchaId = uuid();
         this.captchaUrl = '/yxkj-shelf/common/captcha.jhtml?captchaId='+ this.loginForm.captchaId;
-        //console.info(this.loginForm);
+        if (Cookies.get('RememberMe') == 'true') {
+            this.loginForm.rememberMe = true;
+        }
     },
   }
 
