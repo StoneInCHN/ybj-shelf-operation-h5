@@ -1,35 +1,39 @@
  <template>
-    <div class="login-container" style="background-color: #141a48;margin: 0px;overflow: hidden;">
-      <div id="canvascontainer" ref='can'></div>
+    <div class="login-container" style="background-color: #fff;margin: 0px;overflow: hidden;">
+      <!-- <div id="canvascontainer" ref='can'></div> -->
+      <div style="height:60px;background-color:#347EFF"><img src="static/img/loginLogo.png"  style="margin:8px 20px;"/></div>
+      <H3 style="text-align:center;margin-top:60px;margin-bottom:30px">登录</H3>
       <Form ref="loginForm" autoComplete="on" :model="loginForm" :rules="loginRules" class="card-box login-form">
         <Form-item prop="userName">
           <Input type="text" v-model="loginForm.userName" placeholder="用户名" autoComplete="on">
-          <Icon type="ios-person-outline" slot="prepend"></Icon>
+          <Icon type="ios-person-outline" slot="prepend" style="color:#fff"></Icon>
           </Input>
         </Form-item>
         <Form-item prop="password">
           <Input type="password" v-model="loginForm.password" placeholder="密码" @keyup.enter.native="handleLogin">
-          <Icon type="ios-locked-outline" slot="prepend"></Icon>
+          <Icon type="ios-locked-outline" slot="prepend" style="color:#fff"></Icon>
           </Input>
         </Form-item>
         <Form-item prop="captcha">
           <Row>
-            <Col span="17">
+            <Col span="18">
               <Input type="text" v-model="loginForm.captcha" placeholder="验证码" @keyup.enter.native="handleLogin">
-                <Icon type="ios-locked-outline" slot="prepend"></Icon>
+                <Icon type="ios-locked-outline" slot="prepend" style="color:#fff"></Icon>
               </Input>
             </Col>
-            <Col span="7">
-              <span style="padding-left:15px;height:47px;line-height:47px;cursor:pointer">
+            <Col span="6">
+              <span style="padding-left:20px;height:47px;line-height:47px;cursor:pointer">
                 <img style="border-radius:3px" :src="captchaUrl" @click="changeCaptcha"/>
               </span>
             </Col>                        
           </Row>
         </Form-item>          
         <Form-item>
-          <Checkbox v-model="loginForm.rememberMe" style="color: #fff;margin-left:8px;">&nbsp;记住用户名及密码</Checkbox>
+          <Button type="primary" @click="handleLogin('loginForm')" style="height:45px;width:100%">登录</Button>
+        </Form-item>          
+        <Form-item>
+          <Checkbox v-model="loginForm.rememberMe" style="color:#2d8cf0;margin-left:2px;">&nbsp;记住用户名及密码</Checkbox>
           <span class='tips'>{{errorTips}}</span>
-          <Button type="primary" @click="handleLogin('loginForm')" long>登录</Button>
         </Form-item>        
       </Form>
     </div>
@@ -304,7 +308,7 @@
 
   // }
   </script>
-  <style>
+  <style scope>
   .login-container a {
     color: #0078de;
   }
@@ -322,16 +326,25 @@
   }
   </style>
   <style rel="stylesheet/scss" lang="scss">
-  .tips {
-    font-size: 14px;
-    color: #ed3f14;
-    margin-bottom: 5px;
-    float:right;
-  }
-
   .login-container {
     height: 100vh;
     background-color: #2d3a4b;
+
+    .ivu-btn-primary{
+      color: #fff;
+      background-color: #2DA2F0;
+      border-color: #2DA2F0;
+    }
+    .ivu-input-group-prepend{
+      background-color: #2DA2F0;
+      border: 1px solid #2DA2F0;
+    }
+    .tips {
+      font-size: 14px;
+      color: #ed3f14;
+      margin-bottom: 5px;
+      float:right;
+    }
 
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
@@ -339,11 +352,10 @@
     }
     input {
       background: transparent;
-      border: 1px solid #2d8cf0;
+      border: 1px solid #2DA2F0;
       -webkit-appearance: none;
       border-radius: 3px;
       padding: 12px 5px 12px 15px;
-      color: #eeeeee;
       height: 47px;
     }
     .el-input {
@@ -370,8 +382,7 @@
       left: 0;
       right: 0;
       width: 400px;
-      padding: 35px 35px 15px 35px;
-      margin: 120px auto;
+      margin: 0 auto;
     }
 
     .el-form-item {
