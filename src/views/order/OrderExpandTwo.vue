@@ -40,7 +40,7 @@
                 <span class="expand-value">{{ row.goodsCount }}</span>
             </Col>
         </Row>
-        <Row class="expand-last-row">            
+        <Row class="expand-row">            
             <Col span="8">
                 <span class="expand-key">订单状态：</span>
                 <span class="expand-value">{{ paymentStatusStr }}</span>
@@ -49,7 +49,13 @@
                 <span class="expand-key">交易时间：</span>
                 <span class="expand-value">{{ paymentTimeStr }}</span>
             </Col>
-        </Row>        
+        </Row>      
+        <Row class="expand-last-row">            
+            <Col span="8">
+                <span class="expand-key">创建时间：</span>
+                <span class="expand-value">{{ createDateStr }}</span>
+            </Col>
+        </Row>           
     </div>
 </template>
 <script>
@@ -61,6 +67,7 @@
             return {
                 paymentStatusStr: '',
                 paymentTimeStr: '',
+                createDateStr: '',
             }
         },
         props: {
@@ -80,6 +87,7 @@
         mounted(){
             this.paymentStatusStr = this.paymentStatus(this.row.status);
             this.paymentTimeStr = parseTime(this.row.paymentTime);
+            this.createDateStr = parseTime(this.row.createDate);
         }
 
     }

@@ -19,7 +19,7 @@
                               公司编号 <Input placeholder="公司编号" v-model="filterData.companySn" class="searchInput" @on-enter="changePage(1)"></Input>
                           </Col>                  
                           <Col span="8">
-                              交易时间 
+                              创建时间 
                               <DatePicker type="date" placeholder="选择日期" v-model="filterData.beginDate" class="searchInput"></DatePicker>
                               到 
                               <DatePicker type="date" placeholder="选择日期" v-model="filterData.endDate" class="searchInput"></DatePicker>
@@ -118,9 +118,25 @@ export default {
                                 return params.row.tourist.userName;
                               }
                           },
+                          // {
+                          //     title: '交易时间',
+                          //     key: 'paymentTime',
+                          //     ellipsis:'true',
+                          //     align: 'center',
+                          //     // sortable: 'true',
+                          //     // sortType: 'desc',
+                          //     // sortMethod: (a,b,type) => {
+                          //     //   console.info(a,b,type);
+                          //     // },
+                          //     className: 'column-style',
+                          //     render: (h, params) => {
+                          //       return parseTime(params.row.paymentTime);
+                          //     }
+                              
+                          // },
                           {
-                              title: '交易时间',
-                              key: 'paymentTime',
+                              title: '创建时间',
+                              key: 'createDate',
                               ellipsis:'true',
                               align: 'center',
                               // sortable: 'true',
@@ -130,7 +146,7 @@ export default {
                               // },
                               className: 'column-style',
                               render: (h, params) => {
-                                return parseTime(params.row.paymentTime);
+                                return parseTime(params.row.createDate);
                               }
                               
                           },

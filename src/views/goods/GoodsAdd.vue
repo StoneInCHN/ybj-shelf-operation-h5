@@ -92,7 +92,14 @@
                   } else {
                     callback();
                   } 
-            };                       
+            };  
+            const lengthSn = (rule, value, callback) => {
+                if (value.length < 8 || value.length > 13) {
+                  callback(new Error('密码长度必须为8~~13位'));
+                } else {
+                  callback();
+                }
+            };                     
             return {
                 snExist: false,
                 dataInfo: {
@@ -105,6 +112,8 @@
                 },
                 ruleValidate: {
                     sn: [
+                        { required: true, message: '商品条码不能为空', trigger: 'blur' },
+                        { required: true, trigger: 'blur', validator: lengthSn },
                         { required: true, trigger: 'blur', validator: checkSn },
                         { required: true, trigger: 'blur', validator: isExistSn }
                     ],

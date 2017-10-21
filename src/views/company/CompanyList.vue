@@ -218,7 +218,7 @@ export default {
                             } 
                             this.$Message.info('删除成功');
                         }else{
-                            this.$Message.info('请求错误');
+                            this.$Message.info(response.desc);
                         }              
                       }).catch(error => {
                           this.$Message.info('请求异常');
@@ -246,9 +246,9 @@ export default {
                             }else{
                               this.changePage(this.pageNumber);
                             } 
-                            this.$Message.info('批量删除成功');
+                            this.$Message.info('批量'+ response.desc);
                         }else{
-                            this.$Message.info('请求错误');
+                            this.$Message.info(response.desc);
                         }              
                       }).catch(error => {
                           this.$Message.info('请求异常');

@@ -19,6 +19,10 @@
                 <span class="expand-key">用户识别码：</span>
                 <span class="expand-value">{{ row.tourist.userName }}</span>
             </Col>
+            <Col span="8">
+                <span class="expand-key">创建时间：</span>
+                <span class="expand-value">{{ createDateStr }}</span>
+            </Col>
         </Row>
         <Row class="expand-row">
             <Col span="8">
@@ -59,6 +63,7 @@
             return {
                 paymentStatusStr: '',
                 paymentTimeStr: '',
+                createDateStr: '',
             }
         },
         props: {
@@ -78,6 +83,7 @@
         mounted(){
             this.paymentStatusStr = this.paymentStatus(this.row.status);
             this.paymentTimeStr = parseTime(this.row.paymentTime);
+            this.createDateStr = parseTime(this.row.createDate);
         }
 
     }

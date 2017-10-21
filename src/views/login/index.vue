@@ -1,7 +1,7 @@
  <template>
     <div class="login-container" style="background-color: #fff;margin: 0px;overflow: hidden;">
       <!-- <div id="canvascontainer" ref='can'></div> -->
-      <div style="height:60px;background-color:#347EFF"><img src="static/img/loginLogo.png"  style="margin:8px 20px;"/></div>
+      <div style="height:60px;background-color:#2DA2F0;width:100%"><img src="static/img/loginLogo.png"  style="margin:8px 10px;"/></div>
       <H3 style="text-align:center;margin-top:60px;margin-bottom:30px">登录</H3>
       <Form ref="loginForm" autoComplete="on" :model="loginForm" :rules="loginRules" class="card-box login-form">
         <Form-item prop="userName">
@@ -29,7 +29,7 @@
           </Row>
         </Form-item>          
         <Form-item>
-          <Button type="primary" @click="handleLogin('loginForm')" style="height:45px;width:100%">登录</Button>
+          <Button type="primary" @click="handleLogin('loginForm')" style="font-size:16px;height:45px;width:100%">登 录</Button>
         </Form-item>          
         <Form-item>
           <Checkbox v-model="loginForm.rememberMe" style="color:#2d8cf0;margin-left:2px;">&nbsp;记住用户名及密码</Checkbox>
