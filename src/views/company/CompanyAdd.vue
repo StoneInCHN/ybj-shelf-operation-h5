@@ -15,8 +15,8 @@
                           <Icon size="large" color="#0000ff" type="information-circled"></Icon>
                         </Tooltip>
                       </Col>
-                    </Row> -->
-                </FormItem>
+                    </Row> 
+                </FormItem>-->
                 <FormItem label="公司全称" prop="fullName">
                     <Input v-model="dataInfo.fullName" placeholder="请输入公司全称" @on-blur="checkComanyExist"></Input>
                 </FormItem>

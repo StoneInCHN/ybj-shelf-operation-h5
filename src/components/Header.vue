@@ -16,17 +16,18 @@
         <a href="javascript:void(0)">
            <span slot="button">
           <img src="static/img/avatars/6.jpg" class="img-avatar" alt="o">
-          <span class="d-md-down-none">admin</span>
+          <span class="d-md-down-none">{{user.userName}}</span>
           </span>
         </a>
         <Dropdown-menu slot="list">
             <Dropdown-item>
-              <p class="dropdown-itemp">  <Icon type="chatbox-working"></Icon> System Messages <span class="badge badge-danger">42</span></p>
+              <p class="dropdown-itemp">  <Icon type="chatbox-working"></Icon> 系统消息 <span class="badge badge-danger">42</span></p>
             </Dropdown-item>
             <Dropdown-item divided>
-              <p class="dropdown-itemp"><Icon type="android-contact"></Icon> Change Password</p>
+              <p class="dropdown-itemp" @click="ChangePwd"><Icon type="android-contact"></Icon> 修改密码</p>
             </Dropdown-item>
-            <Dropdown-item > <a href="" @click="Logout"  ><p  class="dropdown-itemp"><Icon type="power"></Icon>Logout</p></a>
+            <Dropdown-item > 
+              <a href="" @click="Logout"><p class="dropdown-itemp"><Icon type="power"></Icon>注销</p></a>
             </Dropdown-item>
         </Dropdown-menu>
     </Dropdown>
@@ -37,14 +38,21 @@
   </navbar>
 </template>
 <script>
-
+import {getCurrentUser} from 'api/common';
 import navbar from './Navbar'
 
 export default {
   name: 'header',
   components: {
-    navbar,
-    
+    navbar,    
+  },
+  data () {
+        return {
+            user: {},
+        }
+  },
+  mounted(){
+      this.user = getCurrentUser();
   },
   methods: {
     Logout(e){
@@ -55,8 +63,8 @@ export default {
                 this.$message.error(err);
               });
     },
-    click () {
-      // do nothing
+    ChangePwd(){
+        this.$router.push({path:'/changePwd'})
     },
     sidebarToggle (e) {
       e.preventDefault()

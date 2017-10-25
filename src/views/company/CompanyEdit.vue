@@ -133,12 +133,14 @@
                 })
             },
             handleReset (name) {
+                let sn = this.dataInfo.sn;
                 this.$refs[name].resetFields();
+                this.dataInfo.sn = sn;
                 this.getShelfList();  
+
             },
             getAreaList () {
                 if (store.getters.areas.code == '0000') {
-                    console.info("hahhah");
                     this.areas= store.getters.areas.msg;
                 }else{
                     this.$store.dispatch('GetAreaList').then(res => {
@@ -152,6 +154,16 @@
               getCompanyData(this.id).then(response => {
                 if (response.code === '0000') {
                   this.dataInfo = response.msg;
+                }               
+              }).catch(error => {
+                console.log(error)
+              });
+            },
+            getShelfList(){
+              getShelfList().then(response => {
+                if (response.code === '0000') {
+                  this.dataInfo.goodsShelves = response.msg;
+                  console.info(this.dataInfo.goodsShelves);
                 }               
               }).catch(error => {
                 console.log(error)

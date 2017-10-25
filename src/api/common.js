@@ -33,8 +33,19 @@ export function getAreaList() {
       return fetch('/yxkj-shelf/admin/company/getAreaList.jhtml', data)
 }
 export function getHomeData() {
+
       const data = {
           userName: store.getters.user.userName
       };
-      return fetch('/yxkj-shelf/common//hp/statistics.jhtml', data)
+      return fetch('/yxkj-shelf/common/hp/statistics.jhtml', data)
+}
+export function changePwd(dataInfo) {
+      var encrypt = new JSEncrypt();
+      encrypt.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCBMPGboxzPh9SApXHBKMQHF31rgB6LQBZxg3VirK9Rbp0qvgIDw+2ygZxPQAkgiK24PTWuBbw2UTNy5NxglSCsCnY8+vJXd8cwZKrBpnwXEcO0Wuh5G8Z++X0AIisMCIoiDZZwWnvqJ7a3vUQIj62qTX259s0UqvjGA7uvoDM9tQIDAQAB");
+      const data = {
+          userName: dataInfo.userName,
+          oldPwd: encrypt.encrypt(dataInfo.oldPwd),
+          newPwd: encrypt.encrypt(dataInfo.newPwd),
+      };
+      return fetch('/yxkj-shelf/admin/admin/changePwd.jhtml', data)
 }
